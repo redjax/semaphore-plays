@@ -22,14 +22,7 @@
         state: present
         update_cache: true
       become: true
-      when: (ansible_facts.os_family == "Debian")
-
-    - name: "Install Tailscale"
-      apt:
-        name: tailscale
-        state: present
-        update_cache: true
-      become: true
+      become_user: root
       when: (ansible_facts.os_family == "Debian")
 
     - name: "Add Tailscale GPG key"
@@ -56,20 +49,13 @@
       when: (ansible_facts.os_family == "Debian") and ("git" not in ansible_facts.packages)
       become: true
 
-    - name: "Install requirements"
-      apt:
-        name: gnupg2
-        state: present
-        update_cache: true
-      become: true
-      when: (ansible_facts.os_family == "Debian")
-
     - name: "Install Tailscale"
       apt:
         name: tailscale
         state: present
         update_cache: true
       become: true
+      become_user: root
       when: (ansible_facts.os_family == "Debian")
 
     - name: Authenticate Tailscale with preauth key
