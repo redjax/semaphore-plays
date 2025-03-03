@@ -39,6 +39,7 @@
       ansible.builtin.apt:
         autoremove: true
       become: true
+      become_user: root
       when: ansible_facts.os_family == "Debian"
 
     - name: "Check if reboot is required"
