@@ -7,7 +7,7 @@
       ansible.builtin.debug:
         var: ansible_facts
 
-    - Name: Debug CPU
+    - name: Debug CPU
       ansible.builtin.debug:
         ## Use ansible_architecture builtin
         msg: "CPU Architecture: {{ ansible_architecture }}"
