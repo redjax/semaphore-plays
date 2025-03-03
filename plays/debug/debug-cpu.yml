@@ -4,6 +4,7 @@
   hosts: all
   become: true
   tasks:
-    ansible.builtin.debug:
-      ## Use ansible_architecture builtin
-      msg: "CPU Architecture: {{ ansible_architecture }}"
+    - Name: Debug CPU
+      ansible.builtin.debug:
+        ## Use ansible_architecture builtin
+        msg: "CPU Architecture: {{ ansible_architecture }}"
