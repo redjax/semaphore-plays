@@ -62,3 +62,4 @@
       shell: |
         sudo tailscale up --authkey {{ tailscale_preauth_key }}
       become: true
+      become_user: root
