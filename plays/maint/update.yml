@@ -61,6 +61,7 @@
       ansible.builtin.command: needs-restarting -r
       ignore_errors: true
       failed_when: false
+      become: true
       changed_when: (ansible_facts.os_family == "RedHat") and (rh_reboot_required.rc != 0)
 
     - name: "Reboot server for updates"
@@ -75,5 +76,6 @@
     - name: Check uptime
       ansible.builtin.shell: "uptime"
       register: Uptime
+      become: true
 
     - ansible.builtin.debug: var=Uptime.stdout
