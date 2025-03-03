@@ -1,0 +1,78 @@
+---
+- name: Install Tailscale
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Update APT cache
+      ansible.builtin.apt:
+        update_cache: yes
+        # Cache valid for 1 hour
+        cache_valid_time: 3600
+      when: (ansible_facts.os_family == "Debian") and ("git" not in ansible_facts.packages)
+      become: true
+
+    - name: "Install requirements"
+      apt:
+        name: gnupg2
+        state: present
+        update_cache: true
+      become: true
+      when: (ansible_facts.os_family == "Debian")
+
+    - name: "Install Tailscale"
+      apt:
+        name: tailscale
+        state: present
+        update_cache: true
+      become: true
+      when: (ansible_facts.os_family == "Debian")
+
+    - name: "Add Tailscale GPG key"
+      apt_key:
+        url: "https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.gpg"
+        state: present
+      become: true
+      when: (ansible_facts.os_family == "Debian")
+
+    - name: "Add Tailscale repository"
+      apt_repository:
+        repo: "deb https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main"
+        state: present
+        filename: tailscale
+        update_cache: yes
+      become: true
+      when: (ansible_facts.os_family == "Debian")
+
+    - name: Update APT cache
+      ansible.builtin.apt:
+        update_cache: yes
+        # Cache valid for 1 hour
+        cache_valid_time: 3600
+      when: (ansible_facts.os_family == "Debian") and ("git" not in ansible_facts.packages)
+      become: true
+
+    - name: "Install requirements"
+      apt:
+        name: gnupg2
+        state: present
+        update_cache: true
+      become: true
+      when: (ansible_facts.os_family == "Debian")
+
+    - name: "Install Tailscale"
+      apt:
+        name: tailscale
+        state: present
+        update_cache: true
+      become: true
+      when: (ansible_facts.os_family == "Debian")
+
+    - name: Authenticate Tailscale with preauth key
+      shell: |
+        sudo tailscale up --authkey {{ tailscale_preauth_key }}
+      become: true
