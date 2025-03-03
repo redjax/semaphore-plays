@@ -1,0 +1,9 @@
+---
+---
+- name: Debug release
+  hosts: all
+  become: true
+  tasks:
+    - name: "Full LSB"
+      ansible.builtin.debug:
+        var: ansible_facts.lsb
